@@ -1,0 +1,59 @@
+:root {
+  color: #1f1f1f;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.5;
+  background: #f6f7f9;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+}
+
+.desc {
+  margin: 0 0 24px;
+  color: #595959;
+}
+
+.meta {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+}
+
+.meta div {
+  display: flex;
+  gap: 12px;
+}
+
+.meta dt {
+  width: 72px;
+  color: #8c8c8c;
+}
+
+.meta dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.error {
+  color: #cf1322;
+}
+
+.muted {
+  color: #8c8c8c;
+}

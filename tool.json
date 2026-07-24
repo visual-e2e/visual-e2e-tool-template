@@ -1,0 +1,23 @@
+{
+  "id": "__TOOL_ID__",
+  "version": "__TOOL_VERSION__",
+  "name": "__TOOL_NAME__",
+  "description": "__TOOL_DESCRIPTION__",
+  "icon": "tool",
+  "category": "test",
+  "rpc": { "protocolVersion": 1 },
+  "capabilities": ["project.context"],
+  "ports": {
+    "preferredProd": "__PREFERRED_PROD_PORT__",
+    "prod": "__PREFERRED_PROD_PORT__",
+    "dev": "__DEV_PORT__",
+    "webDev": "__WEB_DEV_PORT__"
+  },
+  "main": "server/dist/index.js",
+  "webRoot": "web/dist",
+  "engines": { "host": ">=1.4.0" },
+  "sandbox": {
+    "allow": ["scripts", "forms", "popups", "same-origin"],
+    "bridge": []
+  }
+}
