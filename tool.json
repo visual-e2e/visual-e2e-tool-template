@@ -5,6 +5,7 @@
   "description": "__TOOL_DESCRIPTION__",
   "icon": "tool",
   "category": "test",
+  "author": { "name": "__AUTHOR_NAME__" },
   "rpc": { "protocolVersion": 1 },
   "capabilities": ["project.context"],
   "ports": {

@@ -6,7 +6,7 @@ Visual E2E 工具：`__TOOL_ID__`。
 
 ## 开发
 
-在 Visual E2E Test 应用 工具箱中 **开发小工具** 关联本目录后，按主应用提示填入 `E2E_ROOT` 再启动：
+在 Visual E2E Test **应用中心** 中通过 **开发小工具** 关联本目录后，按主应用提示填入 `E2E_ROOT` 再启动：
 
 ```bash
 npm install
@@ -21,7 +21,7 @@ npm run dev
 - API: http://127.0.0.1:__DEV_PORT__
 - Web: http://127.0.0.1:__WEB_DEV_PORT__
 
-关联后从工具箱「开发小工具」打开；需先在主应用「浏览器环境」配置 Chromium。
+关联后从应用中心「开发小工具」打开；需先在主应用「浏览器环境」配置 Chromium。
 
 ## 打包
 
@@ -32,4 +32,4 @@ npm run pack
 
 产出 `dist/__TOOL_ID__-__TOOL_VERSION__.vettool.zip`（生产产物，无源码 / 无 node_modules）。
 
-在 Visual E2E Test 工具箱中「安装工具包」。
+在 Visual E2E Test 应用中心中「安装工具包」。
