@@ -12,7 +12,15 @@
     "protocolVersion": 2
   },
   "capabilities": [
-    "project.context"
+    "project.context",
+    "project.list",
+    "project.variables",
+    "config.settings",
+    "config.browserRuntime",
+    "fs.pickFolder",
+    "fs.dataDir",
+    "scenario.navigate",
+    "cache.clear"
   ],
   "ports": {
     "preferredProd": 7209,

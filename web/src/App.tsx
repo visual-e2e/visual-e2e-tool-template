@@ -1,74 +1,160 @@
 import { useEffect, useState } from "react";
-import { getRpcClient, isEmbedded, type ProjectContextResult } from "@visual-e2e/rpc-sdk";
+import { getRpcClient, isEmbedded } from "@visual-e2e/rpc-sdk";
 
-interface Health {
-  ok: boolean;
-  toolId: string;
-  name?: string;
-  version?: string;
-}
+type RpcAction = {
+  id: string;
+  label: string;
+  method: string;
+  capability: string;
+  run: () => Promise<unknown>;
+};
+
+const RPC_ACTIONS: RpcAction[] = [
+  {
+    id: "getProjectContext",
+    label: "getProjectContext()",
+    method: "project.getContext",
+    capability: "project.context",
+    run: () => getRpcClient().getProjectContext(),
+  },
+  {
+    id: "listProjects",
+    label: "listProjects()",
+    method: "project.list",
+    capability: "project.list",
+    run: () => getRpcClient().listProjects(),
+  },
+  {
+    id: "getProjectVariables",
+    label: "getProjectVariables()",
+    method: "project.getVariables",
+    capability: "project.variables",
+    run: () => getRpcClient().getProjectVariables(),
+  },
+  {
+    id: "getSettings",
+    label: "getSettings()",
+    method: "config.getSettings",
+    capability: "config.settings",
+    run: () => getRpcClient().getSettings(),
+  },
+  {
+    id: "getBrowserRuntime",
+    label: "getBrowserRuntime()",
+    method: "config.getBrowserRuntime",
+    capability: "config.browserRuntime",
+    run: () => getRpcClient().getBrowserRuntime(),
+  },
+  {
+    id: "pickFolder",
+    label: "pickFolder()",
+    method: "fs.pickFolder",
+    capability: "fs.pickFolder",
+    run: () => getRpcClient().pickFolder(),
+  },
+  {
+    id: "getDataDir",
+    label: "getDataDir()",
+    method: "fs.getDataDir",
+    capability: "fs.dataDir",
+    run: () => getRpcClient().getDataDir(),
+  },
+  {
+    id: "navigateScenario",
+    label: "navigateScenario()",
+    method: "scenario.navigate",
+    capability: "scenario.navigate",
+    run: () => getRpcClient().navigateScenario("demo", "sample"),
+  },
+  {
+    id: "cacheClear",
+    label: "cacheClear()",
+    method: "cache.clear",
+    capability: "cache.clear",
+    run: () => getRpcClient().cacheClear(),
+  },
+];
+
+const DEFAULT_ACTION = RPC_ACTIONS[0];
 
 export function App() {
-  const [health, setHealth] = useState<Health | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [projectCtx, setProjectCtx] = useState<ProjectContextResult | null>(null);
   const embedded = isEmbedded();
+  const [activeId, setActiveId] = useState(DEFAULT_ACTION.id);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<unknown>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [called, setCalled] = useState(false);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/health");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = (await res.json()) as Health;
-        if (!cancelled) setHealth(data);
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err.message : "加载失败");
+  const active = RPC_ACTIONS.find((a) => a.id === activeId) ?? DEFAULT_ACTION;
+
+  async function runAction(action: RpcAction) {
+    setActiveId(action.id);
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    setCalled(true);
+    try {
+      if (!isEmbedded()) {
+        throw new Error("请在应用中心 iframe 内打开本工具后再调用 RPC");
       }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+      const data = await action.run();
+      setResult(data === undefined ? { ok: true } : data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    if (!embedded) return;
-    let cancelled = false;
-    void getRpcClient()
-      .getProjectContext()
-      .then((ctx) => {
-        if (!cancelled) setProjectCtx(ctx);
-      })
-      .catch(() => undefined);
-    return () => {
-      cancelled = true;
-    };
-  }, [embedded]);
+    void runAction(DEFAULT_ACTION);
+  }, []);
 
   return (
     <main className="page">
-      <h1>Demo</h1>
-      <p className="desc">Template smoke tool for verifying scaffold</p>
-      {error && <p className="error">{error}</p>}
-      {health && (
-        <dl className="meta">
-          <div>
-            <dt>id</dt>
-            <dd>{health.toolId}</dd>
-          </div>
-          <div>
-            <dt>version</dt>
-            <dd>v{health.version ?? "0.1.0"}</dd>
-          </div>
-          {embedded && (
-            <div>
-              <dt>RPC</dt>
-              <dd>{projectCtx ? projectCtx.base_url || "（已连接，无 base_url）" : "连接中…"}</dd>
-            </div>
+      <header className="page__header">
+        <h1>Demo</h1>
+        <p className="desc">左侧选择 RPC API，右侧查看返回结构</p>
+        {!embedded && (
+          <p className="warn">当前未嵌入 Host iframe，RPC 调用会失败；请从应用中心打开。</p>
+        )}
+      </header>
+
+      <div className="layout">
+        <nav className="rpc-menu" aria-label="RPC API">
+          <div className="rpc-menu__title">RPC API</div>
+          <ul className="rpc-menu__list">
+            {RPC_ACTIONS.map((action) => (
+              <li key={action.id}>
+                <button
+                  type="button"
+                  className={
+                    activeId === action.id ? "rpc-menu__item is-active" : "rpc-menu__item"
+                  }
+                  disabled={loading && activeId === action.id}
+                  onClick={() => void runAction(action)}
+                >
+                  <span className="rpc-menu__label">{action.label}</span>
+                  <span className="rpc-menu__meta">{action.method}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <section className="rpc-result">
+          <h2>返回结果</h2>
+          <p className="rpc-result__head">
+            {active.label}
+            {loading ? " · 请求中…" : ""}
+          </p>
+          {!called && !loading && <p className="muted">尚未调用</p>}
+          {error && <pre className="rpc-result__error">{error}</pre>}
+          {!error && result !== null && (
+            <pre className="rpc-result__json">{JSON.stringify(result, null, 2)}</pre>
           )}
-        </dl>
-      )}
-      {!health && !error && <p className="muted">Connecting…</p>}
+        </section>
+      </div>
     </main>
   );
 }
