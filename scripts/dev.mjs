@@ -4,12 +4,12 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const port = process.env.TOOL_PORT ?? "__DEV_PORT__";
-const webPort = process.env.TOOL_WEB_PORT ?? "__WEB_DEV_PORT__";
+const port = process.env.TOOL_PORT ?? "7109";
+const webPort = process.env.TOOL_WEB_PORT ?? "7159";
 
 const env = {
   ...process.env,
-  TOOL_ID: process.env.TOOL_ID ?? "__TOOL_ID__",
+  TOOL_ID: process.env.TOOL_ID ?? "demo",
   TOOL_PORT: String(port),
   TOOL_WEB_PORT: String(webPort),
 };

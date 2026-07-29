@@ -1,6 +1,6 @@
 {
-  "name": "__PACKAGE_NAME__",
-  "version": "__TOOL_VERSION__",
+  "name": "@visual-e2e/tool-demo",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {

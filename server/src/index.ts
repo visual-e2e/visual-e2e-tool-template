@@ -5,10 +5,10 @@ import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const port = Number(process.env.TOOL_PORT ?? "__DEV_PORT__");
+const port = Number(process.env.TOOL_PORT ?? "7109");
 const host = "127.0.0.1";
 const serveWeb = process.env.SERVE_WEB === "1";
-const toolId = process.env.TOOL_ID ?? "__TOOL_ID__";
+const toolId = process.env.TOOL_ID ?? "demo";
 
 const app = Fastify({ logger: true });
 await app.register(cors, { origin: true });
@@ -16,16 +16,16 @@ await app.register(cors, { origin: true });
 app.get("/api/health", async () => ({
   ok: true,
   toolId,
-  name: "__TOOL_NAME__",
-  version: "__TOOL_VERSION__",
+  name: "Demo",
+  version: "0.1.0",
   port,
 }));
 
 app.get("/api/info", async () => ({
   id: toolId,
-  name: "__TOOL_NAME__",
-  description: "__TOOL_DESCRIPTION__",
-  version: "__TOOL_VERSION__",
+  name: "Demo",
+  description: "Template smoke tool for verifying scaffold",
+  version: "0.1.0",
 }));
 
 if (serveWeb) {

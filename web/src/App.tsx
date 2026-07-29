@@ -47,8 +47,8 @@ export function App() {
 
   return (
     <main className="page">
-      <h1>__TOOL_NAME__</h1>
-      <p className="desc">__TOOL_DESCRIPTION__</p>
+      <h1>Demo</h1>
+      <p className="desc">Template smoke tool for verifying scaffold</p>
       {error && <p className="error">{error}</p>}
       {health && (
         <dl className="meta">
@@ -58,7 +58,7 @@ export function App() {
           </div>
           <div>
             <dt>version</dt>
-            <dd>v{health.version ?? "__TOOL_VERSION__"}</dd>
+            <dd>v{health.version ?? "0.1.0"}</dd>
           </div>
           {embedded && (
             <div>

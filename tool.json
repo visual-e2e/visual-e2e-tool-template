@@ -1,24 +1,37 @@
 {
-  "id": "__TOOL_ID__",
-  "version": "__TOOL_VERSION__",
-  "name": "__TOOL_NAME__",
-  "description": "__TOOL_DESCRIPTION__",
+  "id": "demo",
+  "version": "0.1.0",
+  "name": "Demo",
+  "description": "Template smoke tool for verifying scaffold",
   "icon": "tool",
   "category": "test",
-  "author": { "name": "__AUTHOR_NAME__" },
-  "rpc": { "protocolVersion": 2 },
-  "capabilities": ["project.context"],
+  "author": {
+    "name": "visual-e2e"
+  },
+  "rpc": {
+    "protocolVersion": 2
+  },
+  "capabilities": [
+    "project.context"
+  ],
   "ports": {
-    "preferredProd": "__PREFERRED_PROD_PORT__",
-    "prod": "__PREFERRED_PROD_PORT__",
-    "dev": "__DEV_PORT__",
-    "webDev": "__WEB_DEV_PORT__"
+    "preferredProd": 7209,
+    "prod": 7209,
+    "dev": 7109,
+    "webDev": 7159
   },
   "main": "server/dist/index.js",
   "webRoot": "web/dist",
-  "engines": { "host": ">=1.4.0" },
+  "engines": {
+    "host": ">=1.4.0"
+  },
   "sandbox": {
-    "allow": ["scripts", "forms", "popups", "same-origin"],
+    "allow": [
+      "scripts",
+      "forms",
+      "popups",
+      "same-origin"
+    ],
     "bridge": []
   }
 }

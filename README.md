@@ -1,6 +1,6 @@
-# __TOOL_NAME__
+# Demo
 
-Visual E2E 工具：`__TOOL_ID__`。
+Visual E2E 工具：`demo`。
 
 由 `vet init tool` 从 [visual-e2e-tool-template](https://github.com/visual-e2e/visual-e2e-tool-template) 生成。
 
@@ -44,6 +44,6 @@ npm run build
 npm run pack
 ```
 
-产出 `dist/__TOOL_ID__-__TOOL_VERSION__.vettool.zip`（生产产物，无源码 / 无 node_modules）。
+产出 `dist/demo-0.1.0.vettool.zip`（生产产物，无源码 / 无 node_modules）。
 
 在 Visual E2E Test 应用中心中「安装工具包」。
