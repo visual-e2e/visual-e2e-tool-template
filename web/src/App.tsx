@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getRpcClient, isEmbedded, type ProjectContextResult } from "@visual-e2e/rpc-sdk";
 
 interface Health {
   ok: boolean;
@@ -10,6 +11,8 @@ interface Health {
 export function App() {
   const [health, setHealth] = useState<Health | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [projectCtx, setProjectCtx] = useState<ProjectContextResult | null>(null);
+  const embedded = isEmbedded();
 
   useEffect(() => {
     let cancelled = false;
@@ -28,6 +31,20 @@ export function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!embedded) return;
+    let cancelled = false;
+    void getRpcClient()
+      .getProjectContext()
+      .then((ctx) => {
+        if (!cancelled) setProjectCtx(ctx);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [embedded]);
+
   return (
     <main className="page">
       <h1>__TOOL_NAME__</h1>
@@ -43,6 +60,12 @@ export function App() {
             <dt>version</dt>
             <dd>v{health.version ?? "__TOOL_VERSION__"}</dd>
           </div>
+          {embedded && (
+            <div>
+              <dt>RPC</dt>
+              <dd>{projectCtx ? projectCtx.base_url || "（已连接，无 base_url）" : "连接中…"}</dd>
+            </div>
+          )}
         </dl>
       )}
       {!health && !error && <p className="muted">Connecting…</p>}

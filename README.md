@@ -20,9 +20,22 @@ npm run dev
 
 关联后从应用中心「开发小工具」打开；需先在主应用「浏览器环境」配置 Chromium。
 
-模板已集成 `@visual-e2e/rpc-sdk`。从应用内打开工具时，主应用会注入 RPC 相关环境（如 endpoint、token），`npm run dev` 启动后即可按业务代码调用主平台 RPC。
+## RPC（iframe）
 
-RPC 封装位于 `server/src/rpc/`（`client` / `apis` / `errors`），可在服务端业务逻辑中直接复用。
+工具 web 在应用内 iframe 中运行时，通过 `@visual-e2e/rpc-sdk` 与主应用通信：
+
+```ts
+import { getRpcClient, isEmbedded } from "@visual-e2e/rpc-sdk";
+
+if (isEmbedded()) {
+  const ctx = await getRpcClient().getProjectContext();
+  // ctx.base_url, ctx.username, ctx.password
+}
+```
+
+在 `tool.json` 中声明 `rpc.protocolVersion` 与所需 `capabilities`（如 `project.context`）。协议与类型见 [`visual-e2e-rpc`](https://github.com/visual-e2e/visual-e2e-rpc)。
+
+包未发布前本地 typecheck 可临时将依赖改为 `file:../visual-e2e-rpc/packages/rpc-sdk`。
 
 ## 打包
 

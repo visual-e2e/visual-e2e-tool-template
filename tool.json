@@ -6,7 +6,7 @@
   "icon": "tool",
   "category": "test",
   "author": { "name": "__AUTHOR_NAME__" },
-  "rpc": { "protocolVersion": 1 },
+  "rpc": { "protocolVersion": 2 },
   "capabilities": ["project.context"],
   "ports": {
     "preferredProd": "__PREFERRED_PROD_PORT__",
