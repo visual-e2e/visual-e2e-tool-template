@@ -7,7 +7,17 @@
   "category": "test",
   "author": { "name": "__AUTHOR_NAME__" },
   "rpc": { "protocolVersion": 2 },
-  "capabilities": ["project.context"],
+  "capabilities": [
+    "project.context",
+    "project.list",
+    "project.variables",
+    "config.settings",
+    "config.browserRuntime",
+    "fs.pickFolder",
+    "fs.dataDir",
+    "scenario.navigate",
+    "cache.clear"
+  ],
   "ports": {
     "preferredProd": "__PREFERRED_PROD_PORT__",
     "prod": "__PREFERRED_PROD_PORT__",
