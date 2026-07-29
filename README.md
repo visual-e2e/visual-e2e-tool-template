@@ -18,10 +18,11 @@ export E2E_RUNTIME=client
 npm run dev
 ```
 
-- API: http://127.0.0.1:__DEV_PORT__
-- Web: http://127.0.0.1:__WEB_DEV_PORT__
-
 关联后从应用中心「开发小工具」打开；需先在主应用「浏览器环境」配置 Chromium。
+
+模板已集成 `@visual-e2e/rpc-sdk`。从应用内打开工具时，主应用会注入 RPC 相关环境（如 endpoint、token），`npm run dev` 启动后即可按业务代码调用主平台 RPC。
+
+RPC 封装位于 `server/src/rpc/`（`client` / `apis` / `errors`），可在服务端业务逻辑中直接复用。
 
 ## 打包
 
